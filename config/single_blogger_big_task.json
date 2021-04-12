@@ -1,0 +1,41 @@
+[
+  {
+    "name": "bg收录",
+    "task_type": "agg_nest",
+    "task_period": "day",
+    "datetime": 0,
+    "data_source_type": "es",
+    "data_source": "canal_ins_blogger",
+    "data_target_type": "es",
+    "data_target": "ins_monitor_event",
+    "sql_type": "aggregations",
+    "sql": "  {\n                \"aggs\": {\n                    \"first\": {\n                        \"range\": {\n                            \"field\": \"followerCount\",\n                            \"ranges\": [\n                               {\n                                    \"from\": 0,\n                                    \"to\": 10000\n                                },\n                                {\n                                    \"from\": 10000,\n                                    \"to\": 50000\n                                },\n                                {\n                                    \"from\": 50000\n                                }\n                            ],\n                            \"keyed\": true\n                        },\n                        \"aggs\": {\n                            \"two\": {\n                                \"date_histogram\": {\n                                    \"field\": \"createTime\",\n                                    \"interval\": \"1d\", \n                                    \"min_doc_count\": 1\n                                }\n                            }\n                        }\n                    }\n                },\n                \"size\": 0,\n                \"_source\": {\n                    \"excludes\": [     \n                    ]\n                },\n                \"stored_fields\": [\n                    \"*\"\n                ],\n                \"script_fields\": {\n\n                },                \n                \"query\": {\n                    \"bool\": {\n                        \"must\": [\n                            {\n                                \"range\": {\n                                    \"createTime\": {\n                                        \"gte\": \"now-3d/d\",\n                                        \"lt\": \"now\"\n                                    }\n                                }\n                            }\n                        ]\n                    }\n                },\n                \"timeout\": \"30000ms\"\n            }",
+    "filed_map": "{}"
+  },
+  {
+    "name": "uid",
+    "task_type": "agg_nest",
+    "task_period": "day",
+    "datetime": 0,
+    "data_source_type": "es",
+    "data_source": "canal_ins_blogger_main",
+    "data_target_type": "es",
+    "data_target": "ins_monitor_event",
+    "sql_type": "aggregations",
+    "sql": "  {\n                    \"aggs\": {\n                        \"first\": {\n                            \"range\": {\n                                \"field\": \"followerCount\",\n                                \"ranges\": [\n                                    {\n                                        \"from\": 10000,\n                                        \"to\": 50000\n                                    },\n                                    {\n                                        \"from\": 50000\n                                    }\n                                ],\n                                \"keyed\": true\n                            },\n                            \"aggs\": {\n                                \"two\": {\n                                    \"date_histogram\": {\n                                        \"field\": \"lastCollectTime\",\n                                        \"interval\": \"1d\", \n                                        \"min_doc_count\": 1\n                                    }\n                                }\n                            }\n                        }\n                    },\n                    \"size\": 0,\n                    \"_source\": {\n                        \"excludes\": [     \n                        ]\n                    },\n                    \"stored_fields\": [\n                        \"*\"\n                    ],\n                    \"script_fields\": {\n                        \n                    },                \n                    \"query\": {\n                        \"bool\": {\n                            \"must\": [\n                                {\n                                    \"range\": {\n                                        \"lastCollectTime\": {\n                                            \"gte\": \"now-9d/d\",\n                                            \"lt\": \"now\"\n                                        }\n                                    }\n                                }\n                            ]\n                        }\n                    },\n                    \"timeout\": \"30000ms\"\n                }",
+    "filed_map": "{}"
+  },
+  {
+    "name": "帖子",
+    "task_type": "agg_nest",
+    "task_period": "day",
+    "datetime": 0,
+    "data_source_type": "es",
+    "data_source": "canal_ins_blogger_main",
+    "data_target_type": "es",
+    "data_target": "ins_monitor_event",
+    "sql_type": "aggregations",
+    "sql": "  {\n                \"aggs\": {\n                    \"first\": {\n                        \"range\": {\n                            \"field\": \"followerCount\",\n                            \"ranges\": [\n                                {\n                                    \"from\": 10000,\n                                    \"to\": 50000\n                                },\n                                {\n                                    \"from\": 50000\n                                }\n                            ],\n                            \"keyed\": true\n                        },\n                        \"aggs\": {\n                            \"two\": {\n                                \"date_histogram\": {\n                                    \"field\": \"lastMediaCollectTime\",\n                                    \"interval\": \"1d\", \n                                    \"min_doc_count\": 1\n                                }\n                            }\n                        }\n                    }\n                },\n                \"size\": 0,\n                \"_source\": {\n                    \"excludes\": [     \n                    ]\n                },\n                \"stored_fields\": [\n                    \"*\"\n                ],\n                \"script_fields\": {\n\n                },                \n                \"query\": {\n                    \"bool\": {\n                        \"must\": [\n                            {\n                                \"range\": {\n                                    \"lastMediaCollectTime\": {\n                                        \"gte\": \"now-9d/d\",\n                                        \"lt\": \"now\"\n                                    }\n                                }\n                            }\n                        ]\n                    }\n                },\n                \"timeout\": \"30000ms\"\n            }",
+    "filed_map": "{}"
+  }
+]

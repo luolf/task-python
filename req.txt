@@ -1,0 +1,8 @@
+certifi==2020.12.5
+elasticsearch==7.12.0
+kazoo==2.5.0
+pykafka==2.8.0
+PyMySQL==1.0.2
+six==1.15.0
+tabulate==0.8.9
+urllib3==1.26.4
